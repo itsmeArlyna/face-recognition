@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+</head>
+<body>
+
+<h2>Registration Form</h2>
+
+<form action="submit_registration.php" method="post" enctype="multipart/form-data">
+    <!-- Name Input -->
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <br><br>
+
+    <!-- School ID Input -->
+    <label for="school_id">School ID:</label>
+    <input type="text" id="school_id" name="school_id" required>
+
+    <br><br>
+
+    <!-- Image Upload Inputs -->
+    <label for="image1">Image 1:</label>
+    <input type="file" capture="camera" id="image1" name="image1" accept="image/*" required>
+    <canvas id="previewCanvas" style="display: none;"></canvas>
+
+    <br><br>
+
+    <label for="image2">Image 2:</label>
+    <input type="file" capture="camera" id="image2" name="image2" accept="image/*" required>
+    <canvas id="previewCanvas1" style="display: none;"></canvas>
+
+    <br><br>
+
+    <!-- Submit Button -->
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

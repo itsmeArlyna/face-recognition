@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera Input</title>
+</head>
+<body>
+
+  <form id="cameraForm">
+    <label for="cameraInput">Capture an Image:</label>
+    <input type="file" accept="image/*" id="cameraInput" name="cameraInput" capture="camera">
+    
+    <button type="button" id="openCamera">Open Camera</button>
+    <button type="button" id="captureButton" style="display: none;">Capture</button>
+    
+    <video id="cameraPreview" style="display: none;" autoplay playsinline></video>
+    <canvas id="capturedImageCanvas" style="display: none;"></canvas>
+  </form>
+
+  <script>
+    const openCameraButton = document.getElementById('openCamera');
+    const captureButton = document.getElementById('captureButton');
+    const cameraPreview = document.getElementById('cameraPreview');
+    const capturedImageCanvas = document.getElementById('capturedImageCanvas');
+    const cameraForm = document.getElementById('cameraForm');
+
+    let stream;
+
+    openCameraButton.addEventListener('click', async () => {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        // Show the video preview
+        cameraPreview.srcObject = stream;
+        cameraPreview.style.display = 'block';
+        captureButton.style.display = 'block';
+
+      } catch (error) {
+        console.error('Error accessing the camera:', error);
+      }
+    });
+
+    captureButton.addEventListener('click', () => {
+      if (stream) {
+        // Pause the video to capture a still frame
+        cameraPreview.pause();
+
+        // Convert the video frame to an image
+        const canvas = capturedImageCanvas;
+        canvas.width = cameraPreview.videoWidth;
+        canvas.height = cameraPreview.videoHeight;
+        canvas.getContext('2d').drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
+
+        // Convert the canvas content to a data URL
+        const dataUrl = canvas.toDataURL('image/jpeg');
+
+        // Use the data URL as needed, e.g., display or upload the captured image
+        console.log(dataUrl);
+
+        // Stop the video stream
+        stream.getTracks().forEach(track => track.stop());
+
+        // Reset the display
+        cameraPreview.style.display = 'none';
+        capturedImageCanvas.style.display = 'block';
+        captureButton.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
